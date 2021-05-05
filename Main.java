@@ -19,8 +19,11 @@ public class Main
     plainText[0] = lines[0];
     keys[0] = lines[1];
 
+
     //generate 64 other plaintexts
     //generate 56 other keys
+    generateFlippedBits(plainText, 65);
+    generateFlippedBits(keys, 57);
 
     //avalanche analysis function
     encryptionOutput = encryptionOutput(plaintext, keys);
