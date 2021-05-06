@@ -2,9 +2,9 @@
  * This implements a class DES3 which shows the encryption algorithm this is the forth version of DES in this permutation P is missing from F
  function in all rounds.
  
- * Author - Edward Stone(c335050...), Ankur(c3347695) 
+ * Author - Ewart Stone(c3350508), Ankur(c3347695) 
  * Date - 07/06/2021 
- * This file is used in conjuction with Assignment 2
+ * This file is used in conjuction with Assignment 2 for COMP3260
 
 */
 
@@ -24,7 +24,7 @@ public class DES3 extends DES0							// public class DES3 which  extends using D
 		rightOut = expansionPermutationE(rightHalf);
 		rightOut = xorRoundKey(rightOut, subKey);
 		rightOut = sBox(rightOut);
-		rightOut = xorHalves(leftHalf, rightHalf);
+		rightOut = xorHalves(leftHalf, rightOut);
 		
 		String[] out = {leftOut, rightOut};				//getting the final result 
 		return out;
