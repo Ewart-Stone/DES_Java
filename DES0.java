@@ -17,26 +17,73 @@ public class DES0
 
     public void encrypt()
     {
+	  String cipherText = "";
       // initial permutation
+	  cipherText = initialPermutation();
+	  
+	  String leftHalf = cipherText.substring(0,32);
+	  String rightHalf = cipherText.substring(32);
+	  
       // loop through 16 rounds
+	  for(int i = 0; i < 16; i++)
+	  {
+		String[] temp = round(roundKeys[i], leftHalf, rightHalf);
+		leftHalf = temp[0];
+		rightHalf = temp[1];
+		cipherTexts[i] = leftHalf + rightHalf;
+	  }
+	  
       //32 bit swap
-      // inverseInitialPermutation
+	  cipherText = rightHalf + leftHalf;
+	  
+      //inverseInitialPermutation
+	  cipherText = inverseInitialPermutation(cipherText);
       //updates this.text to encrypted text at end
+	  this.text = cipherText;
     }
 
     public void decrypt()
     {
+	  
+	  String plainText = "";
       // initial permutation
-      // loop through 16 rounds with keys in reverse order
+	  plainText = initialPermutation();
+	  
+	  String leftHalf = plainText.substring(0,32);
+	  String rightHalf = plainText.substring(32);
+	  
+      // loop through 16 rounds
+	  for(int i = 0; i < 16; i++)
+	  {
+		String[] temp = round(roundKeys[15 - i], leftHalf, rightHalf);
+		leftHalf = temp[0];
+		rightHalf = temp[1];
+	  }
+	  
       //32 bit swap
-      // inverseInitialPermutation
-      //updates this.text to encrypted text at end
+	  plainText = rightHalf + leftHalf;
+	  
+      //inverseInitialPermutation
+	  plainText = inverseInitialPermutation(cipherText);
+      //updates this.text to decrypted text at end
+	  this.text = cipherText;
     }
 
     //returns leftHalf and rightHalf
     public String[] round(String subKey, String leftHalf, String rightHalf)
     {
-
+		String leftOut = rightHalf;
+		String rightOut = "";
+		
+		rightOut = expansionPermutationE(rightHalf);
+		rightOut = xorRoundKey(rightOut, subKey);
+		rightOut = sBox(rightOut);
+		rightOut = permutationP(rightOut);
+		rightOut = xorHalves(leftHalf, rightHalf);
+		
+		String[] out = {leftOut, rightOut};
+		return out;
+		
     }
 
     public String expansionPermutationE(String in)
@@ -56,14 +103,14 @@ public class DES0
 
     public String xorRoundKey(String in, String key)
     {
-	String out = "";
-		
-	for(int i = 0; i < in.length())
-	{
-		out = out + Integer.parseInt(in.charAt(0)) ^ Integer.parseInt(in.charAt(0));
-	}
+		String out = "";
+			
+		for(int i = 0; i < in.length())
+		{
+			out = out + Integer.parseInt(in.charAt(i)) ^ Integer.parseInt(key.charAt(i));
+		}
 
-	return out;
+		return out;
     }
 
     public String sBox(String in)
@@ -216,7 +263,16 @@ public class DES0
     public String xorHalves(String leftHalf, String rightHalf)
     {
       //xor righthalf with lefthalf
-      //return rightHalf
+	  
+		String out = "";
+			
+		for(int i = 0; i < leftHalf.length())
+		{
+			out = out + Integer.parseInt(leftHalf.charAt(i)) ^ Integer.parseInt(rightHalf.charAt(i));
+		}
+
+		return out;
+
     }
 
     public void generateKeys()
