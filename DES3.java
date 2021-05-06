@@ -9,6 +9,15 @@ public class DES3 extends DES0
   @Override
   public String[] round(String subKey, String leftHalf, String rightHalf)
   {
-
+    String leftOut = rightHalf;
+		String rightOut = "";
+		
+		rightOut = expansionPermutationE(rightHalf);
+		rightOut = xorRoundKey(rightOut, subKey);
+		rightOut = sBox(rightOut);
+		rightOut = xorHalves(leftHalf, rightHalf);
+		
+		String[] out = {leftOut, rightOut};
+		return out;
   }
 }
