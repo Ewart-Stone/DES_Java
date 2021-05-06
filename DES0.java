@@ -230,7 +230,18 @@ public class DES0
 
     public String inverseExpansionPermutation(String in)
     {
-		return "";
+		int start = 1;
+		int end = 5;
+		String output = "";
+		
+		for(int i = 0; i < 8; i++)
+		{
+			output = output + in.substring(start, end);
+			start += 6;
+			end += 6;
+		}
+		
+		return output;
     }
 
     public String initialPermutation(String in)
