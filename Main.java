@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Main
 {
@@ -9,13 +10,22 @@ public class Main
     String[] keys = new String[57];
     String cipherText = "";
     String cipherKey = "";
+	
+	long start = System.currentTimeMillis();
 
-    LinkedList<String> encryptionOutput = new LinkedList<String>;
-    LinkedList<String> decryptionOutput = new LinkedList<String>;
+    LinkedList<String> encryptionOutput = new LinkedList<String>();
+    LinkedList<String> decryptionOutput = new LinkedList<String>();
+
+	Scanner input = new Scanner(System.in);
 
     //encryption and avalanche analysis
+	
+	//get file input from user
+	System.out.println("Enter the file path and name for the encryption file. i.e. test.txt ");
+	String in = input.nextLine();
+	
     //get inputs from file
-    String[] lines = readFromFile();
+    String[] lines = readFromFile(in);
     plainText[0] = lines[0];
     keys[0] = lines[1];
 
@@ -26,15 +36,23 @@ public class Main
     generateFlippedBits(keys, 57);
 
     //avalanche analysis function
-    encryptionOutput = encryptionOutput(plaintext, keys);
+    encryptionOutput = encryptionOutput(plaintext, keys, start);
 
     //write data to encryption file
     writeToFile(fileName, encryptionOutput);
 
     //decryption
-    String[] lines = readFromFile();
+	
+	//get file input from user
+	System.out.println("Enter the file path and name for the decryption file. i.e. text.txt ");
+	in = input.nextLine();
+	
+    //get inputs from file
+    String[] lines = readFromFile(in);
     cipherText = lines[0];
     cipherKey = lines[1];
+
+
 
     //get decryption file output
     decryptionOutput = decryptionOutput(cipherText, cipherKey);
@@ -45,31 +63,72 @@ public class Main
     //end
   }
 
-  public String[] readFromFile(String fileName)
+  public static String[] readFromFile(String fileName)
   {
     String[] lines = new String[2];
+	
+	try
+	{
+		File input = new File(fileName);
+		Scanner inReader = new Scanner(input);
+		int count = 0;
+		while(inReader.hasNextLine())
+		{
+			String data = nextLine();
+			
+			if(count < 2)
+			{
+				lines[count] = data; 
+			}
+			count++;
+		}
+		inReader.close();
+	}
+	catch (FileNotFoundException e)
+	{
+		System.out.println("Error: file not found");
+	}
 
     return lines;
   }
 
-  public String[] writeToFile(String fileName, LinkedList<String> output)
+  public static void writeToFile(String fileName, LinkedList<String> output)
   {
     String[] lines = new String[2];
-
-    return lines;
+	try
+	{
+		FileWriter writer = new FileWriter(fileName);
+		for(int i = 0; i < output.size(); i++)
+		{
+			writer.write(output.get(i));
+		}
+		writer.close();
+	}
+	catch (IOEception e)
+	{
+		System.out.println("An error has occured");
+	}
   }
 
-  public LinkedList<String> encryptionOutput(String[] plaintext, String[] keys)
+  public static LinkedList<String> encryptionOutput(String[] plaintext, String[] keys, long start)
   {
-
+	LinkedList<String> output = new LinkedList<String>();
+	
+	//after encryption
+	long end = System.currentTimeMillis();
+	long elapsedTime = start - end;
+	
+	return output;
   }
 
-  public LinkedList<String> decryptionOutput(String cipherText, String key)
+  public static LinkedList<String> decryptionOutput(String cipherText, String key)
   {
-
+	LinkedList<String> output = new LinkedList<String>();
+	
+	return output;
   }
 
-  public String[] generateFlippedBits(String[] texts, int length)
+  public static String[] generateFlippedBits(String[] texts, int length)
   {
     for(int i = 1; i < length - 1; i++)
     {
@@ -102,7 +161,7 @@ public class Main
     return texts;
   }
 
-  public int compareBits(String in1, String in2)
+  public static int compareBits(String in1, String in2)
   {
     int differentBits = 0;
 
