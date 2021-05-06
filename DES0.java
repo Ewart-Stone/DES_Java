@@ -96,6 +96,70 @@ public class DES0
 	
 	int[][] S8 ={{13,1,7,2},{2,15,11,1},{8,13,4,14},{4,8,1,7},{6,10,9,4},{15,3,12,10},{11,7,14,8},{1,4,2,13},
 		     {10,12,0,15},{9,5,6,12},{3,6,10,9},{14,11,13,0},{5,0,15,3},{0,14,3,5},{12,9,5,6},{7,2,8,11}};
+	    
+	String[] inputSubstrings = new String[8];
+	int pos = 0;
+
+	for(int i = 0; i < 8; i++)
+	{
+		if(i == 7)
+		{
+			inputSubstrings[i] = in.substring(pos);
+		}
+		else
+		{
+			inputSubstrings[i] = in.substring(pos, pos + 6);
+			pos = pos + 6;
+		}
+	}
+
+	String substitutedString = "";
+
+	for(int i = 0; i < 8; i++)
+	{
+		String rowString = String.valueOf(inputSubstrings[i].charAt(0)) + String.valueOf(inputSubstrings[i].charAt(5));
+		int row = Integer.parseInt(rowString,2);
+
+		String colString = inputSubstrings[i].substring(1,5);
+		int column = Integer.parseInt(colString,2);
+
+		switch(i)
+		{
+			case 0:
+				substitutedString = substitutedString + Integer.toBinaryString(S1[column][row]);
+				break;
+
+			case 1:
+				substitutedString = substitutedString + Integer.toBinaryString(S2[column][row]);
+				break;
+
+			case 2:
+				substitutedString = substitutedString + Integer.toBinaryString(S3[column][row]);
+				break;
+
+			case 3:
+				substitutedString = substitutedString + Integer.toBinaryString(S4[column][row]);
+				break;
+
+			case 4:
+				substitutedString = substitutedString + Integer.toBinaryString(S5[column][row]);
+				break;
+
+			case 5:
+				substitutedString = substitutedString + Integer.toBinaryString(S6[column][row]);
+				break;
+
+			case 6:
+				substitutedString = substitutedString + Integer.toBinaryString(S7[column][row]);
+				break;
+
+			case 7:
+				substitutedString = substitutedString + Integer.toBinaryString(S8[column][row]);
+				break;
+		}
+	}
+
+	return substitutedString;
     }
 
     public String permutationP(String in)
