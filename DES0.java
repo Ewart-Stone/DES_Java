@@ -48,7 +48,7 @@ public class DES0
 
 	for(int i = 0; i < 48; i++)
 	{
-		expandedString = expandedString + String.valueOf(in.charAt(E[i]));
+		expandedString = expandedString + String.valueOf(in.charAt(E[i - 1]));
 	}
 
 	return expandedString;
@@ -68,103 +68,114 @@ public class DES0
 
     public String sBox(String in)
     {
-	int[][] S1 = {{14,0,4,15},{4,15,1,12},{13,7,14,8},{1,4,8,2},{2,14,13,4},{11,13,2,1},
-				  {8,1,11,7},{3,10,15,5},{10,6,12,11},{6,12,9,3},{12,11,7,14},{5,9,3,10},
-				  {9,5,10,0},{0,3,5,6},{7,8,0,13}};
-					  
-	int[][] S2 = {{15,3,0,13},{1,13,14,8},{8,4,7,10},{14,7,11,1},{6,15,10,3},{11,2,4,15},
-				  {3,8,13,4},{4,14,1,2},{9,12,5,11},{7,0,8,6},{2,1,12,7},{13,10,6,12},
-				  {12,6,9,0},{0,9,3,5},{5,11,2,14},{10,5,15,9}};
+		int[][] S1 = {{14,0,4,15},{4,15,1,12},{13,7,14,8},{1,4,8,2},{2,14,13,4},{11,13,2,1},
+					  {8,1,11,7},{3,10,15,5},{10,6,12,11},{6,12,9,3},{12,11,7,14},{5,9,3,10},
+					  {9,5,10,0},{0,3,5,6},{7,8,0,13}};
+						  
+		int[][] S2 = {{15,3,0,13},{1,13,14,8},{8,4,7,10},{14,7,11,1},{6,15,10,3},{11,2,4,15},
+					  {3,8,13,4},{4,14,1,2},{9,12,5,11},{7,0,8,6},{2,1,12,7},{13,10,6,12},
+					  {12,6,9,0},{0,9,3,5},{5,11,2,14},{10,5,15,9}};
 
-	int[][] S3 = {{10,13,13,1},{0,7,6,10},{9,0,4,13},{14,9,9,0},{6,3,8,6},{3,4,15,9},
-				  {15,6,3,8},{5,10,0,7},{1,2,11,4},{13,8,1,15},{12,5,2,14},{7,14,12,3},
-				  {11,12,5,11},{4,11,10,5},{2,15,14,2},{8,1,7,12}};
+		int[][] S3 = {{10,13,13,1},{0,7,6,10},{9,0,4,13},{14,9,9,0},{6,3,8,6},{3,4,15,9},
+					  {15,6,3,8},{5,10,0,7},{1,2,11,4},{13,8,1,15},{12,5,2,14},{7,14,12,3},
+					  {11,12,5,11},{4,11,10,5},{2,15,14,2},{8,1,7,12}};
 
-	int[][] S4 = {{7,13,10,3},{13,8,6,15},{14,11,9,0},{3,5,0,6},{0,6,12,10},{6,5,11,1},
-				  {9,0,7,13},{10,3,13,8},{1,4,15,9},{2,7,1,4},{8,2,3,5},{5,12,14,11},
-				  {11,1,5,12},{12,10,2,7},{4,14,8,2},{15,9,4,14}};
-	    
-	int[][] S5 ={{2,14,4,11},{12,11,2,8},{4,2,1,12},{1,12,11,7},{7,4,10,1},{10,7,13,14},
-		     {11,13,7,2},{6,1,8,13},{8,5,15,6},{5,0,9,15},{3,15,12,0},{15,10,5,9},
-		     {13,3,6,10},{0,9,3,4},{14,8,0,5},{9,6,14,3}};
-    
-	int[][] S6 ={{12,10,9,4},{1,15,14,3},{10,4,15,2},{15,2,5,12},{9,7,2,9},{2,12,8,5},{6,9,12,15},{8,5,3,10},{0,6,7,11},
-		     {13,1,0,14},{3,13,4,1},{4,14,10,7},{14,0,1,6},{7,11,13,0},{5,3,11,8},{11,8,6,13}};
-	
-	int[][]S7 ={{4,13,1,6},{11,0,4,11},{2,11,11,13},{14,7,13,8},{15,4,12,1},{0,9,3,4},{8,1,7,10},{13,10,14,7},
-		    {3,14,4,1},{12,3,15,5},{9,5,6,0},{7,12,8,15},{5,2,0,14},{10,15,5,2},{6,8,9,3},{1,6,2,12}};
-	
-	int[][] S8 ={{13,1,7,2},{2,15,11,1},{8,13,4,14},{4,8,1,7},{6,10,9,4},{15,3,12,10},{11,7,14,8},{1,4,2,13},
-		     {10,12,0,15},{9,5,6,12},{3,6,10,9},{14,11,13,0},{5,0,15,3},{0,14,3,5},{12,9,5,6},{7,2,8,11}};
-	    
-	String[] inputSubstrings = new String[8];
-	int pos = 0;
-
-	for(int i = 0; i < 8; i++)
-	{
-		if(i == 7)
+		int[][] S4 = {{7,13,10,3},{13,8,6,15},{14,11,9,0},{3,5,0,6},{0,6,12,10},{6,5,11,1},
+					  {9,0,7,13},{10,3,13,8},{1,4,15,9},{2,7,1,4},{8,2,3,5},{5,12,14,11},
+					  {11,1,5,12},{12,10,2,7},{4,14,8,2},{15,9,4,14}};
+			
+		int[][] S5 ={{2,14,4,11},{12,11,2,8},{4,2,1,12},{1,12,11,7},{7,4,10,1},{10,7,13,14},
+				 {11,13,7,2},{6,1,8,13},{8,5,15,6},{5,0,9,15},{3,15,12,0},{15,10,5,9},
+				 {13,3,6,10},{0,9,3,4},{14,8,0,5},{9,6,14,3}};
+		
+		int[][] S6 ={{12,10,9,4},{1,15,14,3},{10,4,15,2},{15,2,5,12},{9,7,2,9},{2,12,8,5},{6,9,12,15},{8,5,3,10},{0,6,7,11},
+				 {13,1,0,14},{3,13,4,1},{4,14,10,7},{14,0,1,6},{7,11,13,0},{5,3,11,8},{11,8,6,13}};
+		
+		int[][]S7 ={{4,13,1,6},{11,0,4,11},{2,11,11,13},{14,7,13,8},{15,4,12,1},{0,9,3,4},{8,1,7,10},{13,10,14,7},
+				{3,14,4,1},{12,3,15,5},{9,5,6,0},{7,12,8,15},{5,2,0,14},{10,15,5,2},{6,8,9,3},{1,6,2,12}};
+		
+		int[][] S8 ={{13,1,7,2},{2,15,11,1},{8,13,4,14},{4,8,1,7},{6,10,9,4},{15,3,12,10},{11,7,14,8},{1,4,2,13},
+				 {10,12,0,15},{9,5,6,12},{3,6,10,9},{14,11,13,0},{5,0,15,3},{0,14,3,5},{12,9,5,6},{7,2,8,11}};
+				 
+		String[] inputSubstrings = new String[8];
+		int pos = 0;
+		
+		for(int i = 0; i < 8; i++)
 		{
-			inputSubstrings[i] = in.substring(pos);
+			if(i == 7)
+			{
+				inputSubstrings[i] = in.substring(pos);
+			}
+			else
+			{
+				inputSubstrings[i] = in.substring(pos, pos + 6);
+				pos = pos + 6;
+			}
 		}
-		else
+		
+		String substitutedString = "";
+		
+		for(int i = 0; i < 8; i++)
 		{
-			inputSubstrings[i] = in.substring(pos, pos + 6);
-			pos = pos + 6;
+			String rowString = String.valueOf(inputSubstrings[i].charAt(0)) + String.valueOf(inputSubstrings[i].charAt(5));
+			int row = Integer.parseInt(rowString,2);
+			
+			String colString = inputSubstrings[i].substring(1,5);
+			int column = Integer.parseInt(colString,2);
+			
+			switch(i)
+			{
+				case 0:
+					substitutedString = substitutedString + Integer.toBinaryString(S1[column][row]);
+					break;
+					
+				case 1:
+					substitutedString = substitutedString + Integer.toBinaryString(S2[column][row]);
+					break;
+					
+				case 2:
+					substitutedString = substitutedString + Integer.toBinaryString(S3[column][row]);
+					break;
+					
+				case 3:
+					substitutedString = substitutedString + Integer.toBinaryString(S4[column][row]);
+					break;
+					
+				case 4:
+					substitutedString = substitutedString + Integer.toBinaryString(S5[column][row]);
+					break;
+					
+				case 5:
+					substitutedString = substitutedString + Integer.toBinaryString(S6[column][row]);
+					break;
+					
+				case 6:
+					substitutedString = substitutedString + Integer.toBinaryString(S7[column][row]);
+					break;
+					
+				case 7:
+					substitutedString = substitutedString + Integer.toBinaryString(S8[column][row]);
+					break;
+			}
 		}
+		
+		return substitutedString;
+		
 	}
-
-	String substitutedString = "";
-
-	for(int i = 0; i < 8; i++)
-	{
-		String rowString = String.valueOf(inputSubstrings[i].charAt(0)) + String.valueOf(inputSubstrings[i].charAt(5));
-		int row = Integer.parseInt(rowString,2);
-
-		String colString = inputSubstrings[i].substring(1,5);
-		int column = Integer.parseInt(colString,2);
-
-		switch(i)
-		{
-			case 0:
-				substitutedString = substitutedString + Integer.toBinaryString(S1[column][row]);
-				break;
-
-			case 1:
-				substitutedString = substitutedString + Integer.toBinaryString(S2[column][row]);
-				break;
-
-			case 2:
-				substitutedString = substitutedString + Integer.toBinaryString(S3[column][row]);
-				break;
-
-			case 3:
-				substitutedString = substitutedString + Integer.toBinaryString(S4[column][row]);
-				break;
-
-			case 4:
-				substitutedString = substitutedString + Integer.toBinaryString(S5[column][row]);
-				break;
-
-			case 5:
-				substitutedString = substitutedString + Integer.toBinaryString(S6[column][row]);
-				break;
-
-			case 6:
-				substitutedString = substitutedString + Integer.toBinaryString(S7[column][row]);
-				break;
-
-			case 7:
-				substitutedString = substitutedString + Integer.toBinaryString(S8[column][row]);
-				break;
-		}
-	}
-
-	return substitutedString;
-    }
-
     public String permutationP(String in)
     {
-
+		int[] P = {16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,
+				   9,19,13,30,6,22,11,4,25};
+		
+		String permutedString = "";
+		
+		for(int i = 0; i < 32; i++)
+		{
+			permutedString = permutedString + String.valueOf(in.charAt(P[i - 1]));
+		}
+		
+		return permutedString;
+		
     }
 
     public String inverseExpansionPermutation(String in)
@@ -181,7 +192,7 @@ public class DES0
       String permutedString = "";
       for(int i = 0; i < 64)
       {
-        permutedString = permutedString + String.valueOf(in.charAt(IP[i]));
+        permutedString = permutedString + String.valueOf(in.charAt(IP[i - 1]));
       }
 
       return permutedString;
@@ -196,7 +207,7 @@ public class DES0
       String permutedString = "";
       for(int i = 0; i < 64)
       {
-        permutedString = permutedString + String.valueOf(in.charAt(IIP[i]));
+        permutedString = permutedString + String.valueOf(in.charAt(IIP[i - 1]));
       }
 
       return permutedString;
@@ -243,11 +254,11 @@ public class DES0
       {
         if(i < 28)
         {
-          halves[0] = String.valueOf(this.key.charAt(PC1[i]));
+          halves[0] = String.valueOf(this.key.charAt(PC1[i - 1]));
         }
         else
         {
-          halves[1] = String.valueOf(this.key.charAt(PC1[i]));
+          halves[1] = String.valueOf(this.key.charAt(PC1[i - 1]));
         }
       }
 
@@ -293,7 +304,7 @@ public class DES0
 
       for(int i = 0; i < 48; i++)
       {
-        subkey = subKey + String.valueOf(joinedHalves.charAt(PC2[i]));
+        subkey = subKey + String.valueOf(joinedHalves.charAt(PC2[i - 1]));
       }
 
       return subKey;
