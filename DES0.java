@@ -2,15 +2,17 @@
 
 public class DES0
 {
-    private text;
-    private key;
-    private String[16] roundkeys;
-    private String[16] cipherTexts;
+    private String text;
+    private String key;
+    private String[] roundkeys;
+    private String[] cipherTexts;
 
     public DES0(String text, String key)
     {
       this.text = text;
       this.key = key;
+	  roundkeys = new String[16];
+	  cipherTexts = new String[16];
 
       generateKeys();
     }
@@ -19,7 +21,7 @@ public class DES0
     {
 	  String cipherText = "";
       // initial permutation
-	  cipherText = initialPermutation();
+	  cipherText = initialPermutation(text);
 	  
 	  String leftHalf = cipherText.substring(0,32);
 	  String rightHalf = cipherText.substring(32);
@@ -27,7 +29,7 @@ public class DES0
       // loop through 16 rounds
 	  for(int i = 0; i < 16; i++)
 	  {
-		String[] temp = round(roundKeys[i], leftHalf, rightHalf);
+		String[] temp = round(roundkeys[i], leftHalf, rightHalf);
 		leftHalf = temp[0];
 		rightHalf = temp[1];
 		cipherTexts[i] = leftHalf + rightHalf;
@@ -47,7 +49,7 @@ public class DES0
 	  
 	  String plainText = "";
       // initial permutation
-	  plainText = initialPermutation();
+	  plainText = initialPermutation(text);
 	  
 	  String leftHalf = plainText.substring(0,32);
 	  String rightHalf = plainText.substring(32);
@@ -55,7 +57,7 @@ public class DES0
       // loop through 16 rounds
 	  for(int i = 0; i < 16; i++)
 	  {
-		String[] temp = round(roundKeys[15 - i], leftHalf, rightHalf);
+		String[] temp = round(roundkeys[15 - i], leftHalf, rightHalf);
 		leftHalf = temp[0];
 		rightHalf = temp[1];
 	  }
@@ -64,9 +66,9 @@ public class DES0
 	  plainText = rightHalf + leftHalf;
 	  
       //inverseInitialPermutation
-	  plainText = inverseInitialPermutation(cipherText);
+	  plainText = inverseInitialPermutation(plainText);
       //updates this.text to decrypted text at end
-	  this.text = cipherText;
+	  this.text = plainText;
     }
 
     //returns leftHalf and rightHalf
@@ -105,9 +107,10 @@ public class DES0
     {
 		String out = "";
 			
-		for(int i = 0; i < in.length())
+		for(int i = 0; i < in.length(); i++)
 		{
-			out = out + Integer.parseInt(in.charAt(i)) ^ Integer.parseInt(key.charAt(i));
+			int result = Integer.parseInt(String.valueOf(in.charAt(i))) ^ Integer.parseInt(String.valueOf(key.charAt(i)));
+			out = out + result;
 		}
 
 		return out;
@@ -227,7 +230,7 @@ public class DES0
 
     public String inverseExpansionPermutation(String in)
     {
-	return "";
+		return "";
     }
 
     public String initialPermutation(String in)
@@ -237,7 +240,7 @@ public class DES0
                   61,53,45,37,29,21,13,5,63,55,47,39,31,23,15,7};
 
       String permutedString = "";
-      for(int i = 0; i < 64)
+      for(int i = 0; i < 64; i++)
       {
         permutedString = permutedString + String.valueOf(in.charAt(IP[i - 1]));
       }
@@ -252,7 +255,7 @@ public class DES0
                    34,2,42,10,50,18,58,26,33,1,41,9,49,17,57,25};
 
       String permutedString = "";
-      for(int i = 0; i < 64)
+      for(int i = 0; i < 64; i++)
       {
         permutedString = permutedString + String.valueOf(in.charAt(IIP[i - 1]));
       }
@@ -266,9 +269,10 @@ public class DES0
 	  
 		String out = "";
 			
-		for(int i = 0; i < leftHalf.length())
+		for(int i = 0; i < leftHalf.length(); i++)
 		{
-			out = out + Integer.parseInt(leftHalf.charAt(i)) ^ Integer.parseInt(rightHalf.charAt(i));
+			int result = Integer.parseInt(String.valueOf(leftHalf.charAt(i))) ^ Integer.parseInt(String.valueOf(rightHalf.charAt(i)));
+			out = out + result;
 		}
 
 		return out;
@@ -289,7 +293,7 @@ public class DES0
       {
          leftHalf = leftShift(leftHalf, i + 1);
          rightHalf = leftShift(rightHalf, i + 1);
-         this.roundKeys[i] = permutedChoice2(leftHalf, rightHalf);
+         this.roundkeys[i] = permutedChoice2(leftHalf, rightHalf);
          //
          //
       }
@@ -328,23 +332,23 @@ public class DES0
       //shift by one bit
       if(round == 1 || round == 2 || round == 9 || round == 16)
       {
-        for(int = 1; i < half.length(), i++)
+        for(int i = 1; i < half.length(); i++)
         {
           shiftedHalf = shiftedHalf + String.valueOf(half.charAt(i));
         }
 
-        shiftedHalf = shiftedHalf + String.valueOf(half.charAt(0);
+        shiftedHalf = shiftedHalf + String.valueOf(half.charAt(0));
       }
       //shift by two bits
       else
       {
-        for(int = 2; i < half.length(), i++)
+        for(int i = 2; i < half.length(); i++)
         {
           shiftedHalf = shiftedHalf + String.valueOf(half.charAt(i));
         }
 
-        shiftedHalf = shiftedHalf + String.valueOf(half.charAt(0);
-        shiftedHalf = shiftedHalf + String.valueOf(half.charAt(1);
+        shiftedHalf = shiftedHalf + String.valueOf(half.charAt(0));
+        shiftedHalf = shiftedHalf + String.valueOf(half.charAt(1));
       }
 
       return shiftedHalf;
@@ -360,10 +364,10 @@ public class DES0
 
       for(int i = 0; i < 48; i++)
       {
-        subkey = subKey + String.valueOf(joinedHalves.charAt(PC2[i - 1]));
+        subkey = subkey + String.valueOf(joinedHalves.charAt(PC2[i - 1]));
       }
 
-      return subKey;
+      return subkey;
     }
 
     public String getCipherText(int index)
