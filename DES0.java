@@ -227,7 +227,7 @@ public class DES0
 
     public String inverseExpansionPermutation(String in)
     {
-
+	return "";
     }
 
     public String initialPermutation(String in)
