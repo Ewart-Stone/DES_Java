@@ -1,32 +1,39 @@
+
 /*
- * This implements a class DES1 which shows the encryption algorithm this is the Second version of DES in this XOR with a round key is missing from F function in all rounds
- 
+ * This implements a child class of DES0
+ * Overloads round() method to implement DES1 requirements in spec
+ * Polymorphism handles altered encryption and decryption
  * Author - Ewart Stone(c3350508), Ankur(c3347695) 
  * Date - 07/05/2021 
  * This file is used in conjuction with Assignment 2
+ * 
 
 */
 
-public class DES1 extends DES0                                          //DES1 is the public class  which is  extends DES0
+public class DES1 extends DES0
 {
+	//constructor
   public DES1(String text, String key)
   {
+	//calls super constructor
     super(text, key);
   }
 
+  //overloads round method
   @Override
   //returns leftHalf and rightHalf
-  public String[] round(String subKey, String leftHalf, String rightHalf)   // general string's in a round string 
+  public String[] round(String subKey, String leftHalf, String rightHalf)
   {
-    String leftOut = rightHalf;                                             // leftout is equals to right half in all the cases of DES
-    String rightOut = "";                                                   // here the working is dhown to get the right out 
+    String leftOut = rightHalf;
+    String rightOut = "";
 
-    rightOut = expansionPermutationE(rightHalf);                            // XOR with a round key is missing  from F function in all rounds 
+	//DES F function without xor with key
+    rightOut = expansionPermutationE(rightHalf);
     rightOut = sBox(rightOut);
     rightOut = permutationP(rightOut);
-    rightOut = xorHalves(leftHalf, rightHalf);
+    rightOut = xorHalves(leftHalf, rightOut);
 
-    String[] out = {leftOut, rightOut};                                    // result
+    String[] out = {leftOut, rightOut};
     return out;
 
   }

@@ -1,32 +1,36 @@
 /*
- * This implements a class DES3 which shows the encryption algorithm this is the forth version of DES in this permutation P is missing from F
- function in all rounds.
- 
+ * This implements a child class of DES0
+ * Overloads round() method to implement DES3 requirements in spec
+ * Polymorphism handles altered encryption and decryption
  * Author - Ewart Stone(c3350508), Ankur(c3347695) 
  * Date - 07/05/2021 
- * This file is used in conjuction with Assignment 2 for COMP3260
+ * This file is used in conjuction with Assignment 2
+ * 
 
 */
-
-public class DES3 extends DES0							// public class DES3 which  extends using DES0
+public class DES3 extends DES0
 {
-  public DES3(String text, String key)						// we got two text and key 
+  public DES3(String text, String key)
   {
+	//calls super constructor
     super(text, key);
   }
 
+  //overloads round() method
   @Override
+  //returns leftHalf and rightHalf
   public String[] round(String subKey, String leftHalf, String rightHalf)
   {
-    String leftOut = rightHalf;							// the left out we get is equalls to the right half
-		String rightOut = "";						//from here it is showing what are the F Functions are working in all rounds 
-		
+    String leftOut = rightHalf;
+		String rightOut = "";
+
+		//DES F function without permutation P
 		rightOut = expansionPermutationE(rightHalf);
 		rightOut = xorRoundKey(rightOut, subKey);
 		rightOut = sBox(rightOut);
 		rightOut = xorHalves(leftHalf, rightOut);
-		
-		String[] out = {leftOut, rightOut};				//getting the final result 
+
+		String[] out = {leftOut, rightOut};
 		return out;
   }
 }
