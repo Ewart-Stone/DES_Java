@@ -1,7 +1,7 @@
 /*
  * This implements a class DES2 which shows the encryption algorithm this is the Third version of DES in this the S-boxes are missing from F Function in all rounds instead of them inverse 𝐸−1 of the Expansion permutation E is used for contraction from 48 down to 32 bits 
  
- * Author - Edward Stone(c3350508), Ankur(c3347695) 
+ * Author - Ewart Stone(c3350508), Ankur(c3347695) 
  * Date - 07/06/2021 
  * This file is used in conjuction with Assignment 2
 
