@@ -2,7 +2,7 @@
  * This implements a class DES1 which shows the encryption algorithm this is the Second version of DES in this XOR with a round key is missing from F function in all rounds
  
  * Author - Ewart Stone(c3350508), Ankur(c3347695) 
- * Date - 07/06/2021 
+ * Date - 07/05/2021 
  * This file is used in conjuction with Assignment 2
 
 */
